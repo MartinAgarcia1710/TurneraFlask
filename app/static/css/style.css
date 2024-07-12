@@ -1,0 +1,17 @@
+body{
+    font-family: Kanit;
+}
+
+.nav-link{
+    color: white; 
+}
+
+#search_icon{
+    color: white;
+}
+
+.flash_msg{
+    font-size: 1em;
+    height: fit-content; !important
+
+}

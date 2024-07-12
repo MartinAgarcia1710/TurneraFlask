@@ -1,6 +1,6 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from enum import Enum 
 from sqlalchemy import Enum as SqlEnum
 
@@ -8,7 +8,9 @@ class Usuario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-
+    datos_personales = db.relationship(
+        'Datos_Personales', backref='usuario', uselist=False)
+    
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
@@ -25,6 +27,10 @@ class Datos_Personales(db.Model):
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
     es_prestador = db.Column(db.Boolean, nullable=False, default=False)
     
+    @property
+    def iniciales(self):
+        return f"{self.nombre[0].upper()}{self.apellido[0].upper()}"
+    
 class Establecimiento(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100), nullable=False)
@@ -33,7 +39,7 @@ class Establecimiento(db.Model):
     descripcion = db.Column(db.String(200), nullable=True)
     telefono = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    propietario_id = db.Column(db.Integer, db.ForeignKey('datos_personales.id'), nullable=False)
+    propietario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=True)
     
 class Turno(db.Model):
     class Estados_Turno(Enum):

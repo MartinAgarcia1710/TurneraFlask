@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Perfil
+{% endblock %}
+
+{% block content %}
+
+<p>{{datos_personales.nombre}}</p>
+<p>{{datos_personales.apellido}}</p>
+<p>{{current_user.email}}</p>
+<p>{{datos_personales.fecha_nacimiento}}</p>
+
+<p>llegaste a perfil mi bro</p>
+
+{% endblock %}
